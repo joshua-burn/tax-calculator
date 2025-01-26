@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tax Calculator</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      h2 {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      h3 {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      p {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .container {
+        display: grid;
+        grid-template-rows: 100px 1fr 1fr 100px;
+        grid-template-columns: 1fr 1.4fr 1.4fr 1fr;
+      }
+
+      /* grid area: stating-row / starting-column / number-of-rows / number-of-columns */
+      .left-top-nav-bar {
+        grid-area: 1 / 1 / span 1 / span 1;
+        background-color: #3844ca;
+        display: flex;
+        align-items: center;
+      }
+
+      .middle-top-nav-bar {
+        grid-area: 1 / 2 / span 1 / span 2;
+        background-color: #3844ca;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .right-top-nav-bar {
+        grid-area: 1 / 4 / span 1 / span 1;
+        background-color: #3844ca;
+      }
+
+      .bottom-nav-bar {
+        grid-area: 4 / 1 / span 1 / span 4;
+        background-color: #3844ca;
+        margin: 0;
+        padding: 0;
+      }
+
+      .left-grid-gutter {
+        grid-area: 2 / 1 / span 2 / span 1;
+      }
+
+      .right-grid-gutter {
+        grid-area: 2 / 4 / span 2 / span 1;
+      }
+
+      .top-grid-panel {
+        grid-area: 2 / 2 / span 1 / span 2;
+      }
+
+      .bottom-left-grid-panel {
+        grid-area: 3 / 2 / span 1 / span 1;
+      }
+
+      .bottom-right-grid-panel {
+        grid-area: 3 / 3 / span 1 / span 1;
+      }
+
+      .table-collapse {
+        border-collapse: collapse;
+      }
+
+      .your-details-label {
+        width: 275px;
+        display: inline-block;
+      }
+
+      .tax-rate-table-header {
+        background-color: white;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: left;
+        border-top: 1px solid black;
+        border-bottom: 2px solid rgb(146, 146, 146);
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+      }
+
+      .tax-rate-table-row {
+        background-color: white;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: left;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+      }
+
+      .tax-breakdown-table {
+        width: auto;
+      }
+
+      .tax-breakdown-table-result-column-width {
+        min-width: 140px;
+      }
+
+      .justify-right {
+        text-align: right;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+    </style>
+  </head>
+    <body>
+      <div class="container">
+        <div class="left-top-nav-bar">
+          <img src="\images\ato-logo-white.png">
+        </div>
+        <div class="middle-top-nav-bar">
+         <h1>Australian Resident Tax Calculator</h1> 
+        </div>
+        <div class="right-top-nav-bar"></div>
+        <div class="left-grid-gutter"></div>
+        <div class="top-grid-panel">
+          <h2>Australian Government Tax Rates 2024-2025</h2>
+          <h3>Income Tax</h3>
+          <table class="table-collapse">
+            <tr>
+              <th class="tax-rate-table-header">Taxable income</th>
+              <th class="tax-rate-table-header">Tax on this income</th>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">0 – $18,200</td>
+              <td class="tax-rate-table-row">Nil</td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">$18,201 – $45,000</td>
+              <td class="tax-rate-table-row">16c for each $1 over $18,200</td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">$45,001 – $135,000</td>
+              <td class="tax-rate-table-row">$4,288 plus 30c for each $1 over $45,000</td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">$135,001 – $190,000</td>
+              <td class="tax-rate-table-row">$31,288 plus 37c for each $1 over $135,000</td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">$190,001 and over</td>
+              <td class="tax-rate-table-row">$51,638 plus 45c for each $1 over $190,000</td>
+            </tr>
+          </table>
+          <h3>Medicare Levy</h3>
+          <p>Medicare Levy is 2% of taxable income.</p>
+          <h3>Medicare Levy Surcharge</h3>
+        <table class="table-collapse">
+          <tr>
+            <th class="tax-rate-table-header">Threshold</th>
+            <th class="tax-rate-table-header">Base tier</th>
+            <th class="tax-rate-table-header">Tier 1</th>
+            <th class="tax-rate-table-header">Tier 2</th>
+            <th class="tax-rate-table-header">Tier 3</th>
+          </tr>
+          <tr>
+            <td class="tax-rate-table-row">Single threshold</td>
+            <td class="tax-rate-table-row">$97,000 or less</td>
+            <td class="tax-rate-table-row">$97,001 – $113,000</td>
+            <td class="tax-rate-table-row">$113,001 – $151,000</td>
+            <td class="tax-rate-table-row">$151,001 or more</td>
+          </tr>
+          <tr>
+            <td class="tax-rate-table-row">Family threshold</td>
+            <td class="tax-rate-table-row">$194,000 or less</td>
+            <td class="tax-rate-table-row">$194,001 – $226,000</td>
+            <td class="tax-rate-table-row">$226,001 – $302,000</td>
+            <td class="tax-rate-table-row">$302,001 or more</td>
+          </tr>
+          <tr>
+            <td class="tax-rate-table-row">Medicare levy surcharge</td>
+            <td class="tax-rate-table-row">0%</td>
+            <td class="tax-rate-table-row">1%</td>
+            <td class="tax-rate-table-row">1.25%</td>
+            <td class="tax-rate-table-row">1.5%</td>
+          </tr>
+        </table>
+        <p>The family income threshold is increased by $1,500 for each MLS dependent child after the first child.</p>
+        </div>
+        <div class="bottom-left-grid-panel">
+          <h2>Your Details</h2>
+          <form>
+            <p>
+              <label class="your-details-label">Taxable Income</label>
+              <input id="taxable-income-input" placeholder="$0.00" onkeyup="
+                formatCurrencyInput('taxable-income-input');
+                updateTaxBreakdown();
+              ">
+            </p>
+            <p>
+              <label class="your-details-label">Superannuation Contribution Rate (%)</label>
+              <input id="superannuation-contribution-rate-input" type="number" value="11.5" placeholder="11.5" min="11.5" max="30" step="0.1" onkeyup="
+                updateTaxBreakdown();
+              " onclick="
+                updateTaxBreakdown();
+              ">
+            </p>
+            <p>
+              <label class="your-details-label">Private Health Insurance</label>
+              <input id='private-health-yes' type="checkbox" onclick="
+                uncheckCheckBox('private-health-no');
+                uncheckCheckBox('is-couple');
+                uncheckCheckBox('is-single');
+                removeInputContent('partner-taxable-income-input');
+                removeInputContent('number-of-dependant-children-input');
+                displayCheckedHiddenBlock('private-health-no', 'marital-status');
+                displayCheckedHiddenBlock('marital-status', 'couple-details');
+                updateTaxBreakdown();
+              ">Yes</input>
+              <input id='private-health-no' type="checkbox" onclick="
+                uncheckCheckBox('private-health-yes');
+                uncheckCheckBox('is-couple');
+                uncheckCheckBox('is-single');
+                removeInputContent('partner-taxable-income-input');
+                removeInputContent('number-of-dependant-children-input');
+                displayCheckedHiddenBlock('private-health-no', 'marital-status');
+                displayCheckedHiddenBlock('marital-status', 'couple-details');
+                updateTaxBreakdown();
+              ">No</input><br>
+            </p>
+            <p id="marital-status" style="display: none;">  
+              <label class="your-details-label">Marital Status</label>
+              <input id="is-single" type="checkbox" onclick="
+                uncheckCheckBox('is-couple');
+                removeInputContent('partner-taxable-income-input');
+                removeInputContent('number-of-dependant-children-input');
+                displayCheckedHiddenBlock('is-couple', 'couple-details');
+                updateTaxBreakdown();
+              ">Single</input>
+              <input id='is-couple' type="checkbox" onclick="
+                uncheckCheckBox('is-single');
+                removeInputContent('partner-taxable-income-input');
+                removeInputContent('number-of-dependant-children-input');
+                displayCheckedHiddenBlock('is-couple', 'couple-details');
+                updateTaxBreakdown();
+              ">Couple</input><br>
+            </p>
+            <div id="couple-details" style="display: none;">
+              <p>
+                <label class="your-details-label">Partner Taxable Income</label>
+                <input id="partner-taxable-income-input" placeholder="$0.00" onkeyup="
+                  formatCurrencyInput('partner-taxable-income-input');
+                  updateTaxBreakdown();
+                ">
+              </p>
+              <p>
+                <label class="your-details-label">Number of Dependent Children</label>
+                <input id="number-of-dependant-children-input" placeholder="0" onkeyup="
+                  updateTaxBreakdown();
+                ">
+              </p>
+            </div>
+          </forms>
+        </div>
+        <div class="bottom-right-grid-panel">
+          <h2>Tax Breakdown</h2>
+          <h3>Financial Year End Summary</h3>
+          <table class="tax-breakdown-table table-collapse">
+            <tr>
+              <td class="tax-rate-table-row column-width bold">Taxable Income</td>
+              <td id="fy-taxable-income" class="tax-rate-table-row justify-right tax-breakdown-table-result-column-width bold"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">Income Tax</td>
+              <td id="fy-income-tax" class="tax-rate-table-row justify-right"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">Medicare Levy</td>
+              <td id="fy-medicare-levy" class="tax-rate-table-row justify-right"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">Medicare Levy Surcharge</td>
+              <td id="fy-medicare-levy-surcharge" class="tax-rate-table-row justify-right"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row bold">Net Income</td>
+              <td id="fy-net-income" class="tax-rate-table-row justify-right bold"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row italic">Superannuation Contribution</td>
+              <td id="fy-superannuation-contribution" class="tax-rate-table-row justify-right italic"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row bold">Gross Income</td>
+              <td id="fy-gross-income" class="tax-rate-table-row justify-right bold"></td>
+            </tr>
+          </table>
+          <h3>PAYG Summary</h3>
+          <select id="time-period" name="time-period" class="time-period-select" onchange="
+            updateTaxBreakdown();
+          ">
+            <option value="monthly" selected="selected">Monthly</option>
+            <option value="fortnightly">Fortnightly</option>
+            <option value="weekly">Weekly</option>
+          </select>
+          <br>
+          <br>
+          <table class="tax-breakdown-table table-collapse">
+            <tr>
+              <td class="tax-rate-table-row column-width bold">Taxable Income</td>
+              <td id="payg-taxable-income" class="tax-rate-table-row justify-right tax-breakdown-table-result-column-width bold"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">Income Tax</td>
+              <td id="payg-income-tax" class="tax-rate-table-row justify-right"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row">Medicare Levy</td>
+              <td id="payg-medicare-levy" class="tax-rate-table-row justify-right"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row bold">Net Income</td>
+              <td id="payg-net-income" class="tax-rate-table-row justify-right bold"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row italic">Superannuation Contribution</td>
+              <td id="payg-superannuation-contribution" class="tax-rate-table-row justify-right italic"></td>
+            </tr>
+            <tr>
+              <td class="tax-rate-table-row bold">Gross Income</td>
+              <td id="payg-gross-income" class="tax-rate-table-row justify-right bold"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="right-grid-gutter"></div>
+        <div class="bottom-nav-bar"></div>
+      </div>
+      <script>
+        function uncheckCheckBox(checkBoxId) {
+          document.getElementById(checkBoxId).checked = false;
+        }
+
+        function removeInputContent(inputId) {
+          document.getElementById(inputId).value = ''
+        }
+
+        function formatNumberToCurrency(number) {
+          const AusDollar = new Intl.NumberFormat(
+            'en-US',
+            {
+              style: 'currency',
+              // USD is the style I want for AUD not A$.
+              currency: 'USD'
+            }
+          )
+          const currency = AusDollar.format(number);
+
+          return currency
+        }
+
+        function formatCurrencyInput(inputId) {
+          let newInput = document.getElementById(inputId).value;
+          newInput = newInput.replace(/[^\d.-]/g, '');
+          const newInputLength = newInput.length;
+          const fullStopIndex = newInput.indexOf(".");
+
+          if (fullStopIndex > -1) {
+            if ((newInputLength - fullStopIndex) > 3) {
+              newInput = newInput.slice(0, newInputLength - 1);
+            }
+          }
+
+          if (fullStopIndex > -1) {
+            const secondHalf = newInput.slice(fullStopIndex);
+            let firstHalf = newInput.slice(0, fullStopIndex);
+            firstHalf = Number(firstHalf);
+            firstHalf = firstHalf.toLocaleString('en-US');
+            newInput = firstHalf + secondHalf;
+          } else {
+            newInput = Number(newInput);
+            newInput = newInput.toLocaleString('en-US');
+          }
+
+          if (newInput === '0') {
+            document.getElementById(inputId).value = '';
+          } else {
+            document.getElementById(inputId).value = '$' + newInput;
+          }
+        }
+
+        function displayCheckedHiddenBlock (checkboxId, hiddenBlockId) {
+          const checkbox = document.getElementById(checkboxId)
+          const hiddenBlock = document.getElementById(hiddenBlockId)
+
+          if (checkbox.checked) {
+            hiddenBlock.style.display="block";
+          } else {
+            hiddenBlock.style.display="none";
+          }
+        }
+
+        function retrieveTaxableIncome() {
+          let taxableIncome = document.getElementById('taxable-income-input').value;
+          taxableIncome = Number(taxableIncome.replace(/[^0-9.-]+/g,""));
+          return taxableIncome
+        }
+
+        function calculateIncomeTax(taxableIncome) {
+          let incomeTax = 0;
+          if (taxableIncome > 190000) {
+            incomeTax = 51638 + ((taxableIncome - 190000) * 0.45);
+          } else if (taxableIncome > 135000) {
+            incomeTax = 31288 + ((taxableIncome - 135000) * 0.37);
+          } else if (taxableIncome > 45000) {
+            incomeTax = 4288 + ((taxableIncome - 45000) * 0.30);
+          } else if (taxableIncome > 18200) {
+            incomeTax = (taxableIncome - 18200) * 0.30;
+          }
+
+          return incomeTax
+        }
+
+        function calculateMedicareLevy(taxableIncome) {
+          const medicareLevy = taxableIncome * 0.02;
+          return medicareLevy
+        }
+
+        function calculateMedicareLevySurcharge(taxableIncome) {
+          const tier1 = 0.01;
+          const tier2 = 0.0125;
+          const tier3 = 0.015;
+          let medicareLevySurcharge = 0;
+          let hasPrivateHealthInsurance = true;
+          let isSingle = true;
+          let partnerTaxableIncome = 0;
+          let familyIncomeThreshold = 0;
+
+          if (document.getElementById('private-health-no').checked) {
+            hasPrivateHealthInsurance = false;
+          }
+
+          if (document.getElementById('is-couple').checked) {
+            isSingle = false;
+            partnerTaxableIncome = document.getElementById('partner-taxable-income-input').value;
+            partnerTaxableIncome = Number(partnerTaxableIncome.replace(/[^\d.-]/g, ''));
+            let numberOfDependantChildren = Number(document.getElementById('number-of-dependant-children-input').value);
+            if (numberOfDependantChildren > 1) {
+              familyIncomeThreshold = 1500 * (numberOfDependantChildren - 1);
+            }
+          }
+
+          if (!hasPrivateHealthInsurance) {
+            if (isSingle) {
+              if (taxableIncome >= 151001) {
+                medicareLevySurcharge = taxableIncome * tier3;
+              } else if (taxableIncome >= 113001) {
+                medicareLevySurcharge = taxableIncome * tier2;
+              } else if (taxableIncome >= 97001) {
+                medicareLevySurcharge = taxableIncome * tier1;
+              }
+            } else {
+              if ((taxableIncome + partnerTaxableIncome) >= (302001 + familyIncomeThreshold)) {
+                medicareLevySurcharge = taxableIncome * tier3;
+              } else if ((taxableIncome + partnerTaxableIncome) >= (226001 + familyIncomeThreshold)) {
+                medicareLevySurcharge = taxableIncome * tier2;
+              } else if ((taxableIncome + partnerTaxableIncome) >= (194001 + familyIncomeThreshold)) {
+                medicareLevySurcharge = taxableIncome * tier1;
+              }
+            }
+          }
+
+          return medicareLevySurcharge
+        }
+
+        function calculateNetIncome(taxableIncome, incomeTax, medicareLevy, medicareLevySurcharge) {
+          const netIncome = taxableIncome - incomeTax - medicareLevy - medicareLevySurcharge;
+          return netIncome
+        }
+
+        function calculateSuperannuationContribution(taxableIncome) {
+          let superannuationContributionRate = Number(document.getElementById('superannuation-contribution-rate-input').value);
+          superannuationContribution = taxableIncome * (superannuationContributionRate / 100);
+
+          return superannuationContribution
+        }
+
+        function updateTaxBreakdown() {
+          const timePeriod = document.querySelector('.time-period-select').value;
+          const taxableIncome = retrieveTaxableIncome();
+          const incomeTax = calculateIncomeTax(taxableIncome);
+          const medicareLevy = calculateMedicareLevy(taxableIncome);
+          const medicareLevySurcharge = calculateMedicareLevySurcharge(taxableIncome);
+          const superannuationContribution = calculateSuperannuationContribution(taxableIncome);
+
+          let timePeriodDiv = 1;
+
+          if (timePeriod === 'monthly') {
+            timePeriodDiv = 12;
+          } else if (timePeriod === 'fortnightly') {
+            timePeriodDiv = 26;
+          } else if (timePeriod === 'weekly') {
+            timePeriodDiv = 52;
+          }
+
+          let fyNetIncome = calculateNetIncome(taxableIncome, incomeTax, medicareLevy, medicareLevySurcharge);
+          let paygNetIncome = calculateNetIncome(taxableIncome, incomeTax, medicareLevy, 0);
+
+          let fyGrossIncome = fyNetIncome + superannuationContribution;
+          let paygGrossIncome = paygNetIncome + superannuationContribution;
+
+          let fyTaxableIncome = formatNumberToCurrency(taxableIncome);
+          let fyIncomeTax = formatNumberToCurrency(incomeTax);
+          let fyMedicareLevy = formatNumberToCurrency(medicareLevy);
+          let fyMedicareLevySurcharge = formatNumberToCurrency(medicareLevySurcharge);
+          fyNetIncome = formatNumberToCurrency(fyNetIncome);
+          let fySuperannuationContribution = formatNumberToCurrency(superannuationContribution);
+          fyGrossIncome = formatNumberToCurrency(fyGrossIncome);
+
+          let paygTaxableIncome = formatNumberToCurrency(taxableIncome / timePeriodDiv);
+          let paygIncomeTax = formatNumberToCurrency(incomeTax / timePeriodDiv);
+          let paygMedicareLevy = formatNumberToCurrency(medicareLevy / timePeriodDiv);
+          paygNetIncome = formatNumberToCurrency(paygNetIncome / timePeriodDiv);
+          let paygSuperannuationContribution = formatNumberToCurrency(superannuationContribution / timePeriodDiv);
+          paygGrossIncome = formatNumberToCurrency(paygGrossIncome / timePeriodDiv);
+
+          let empty = ''
+          let canCalculate = false
+
+          if (taxableIncome > 0) {
+            if (document.getElementById('private-health-yes').checked) {
+              canCalculate = true
+            } else if (document.getElementById('private-health-no').checked) 
+              if (document.getElementById('is-single').checked || document.getElementById('is-couple').checked) {
+                canCalculate = true
+              }
+          }
+
+          if (canCalculate) {
+            document.getElementById('fy-taxable-income').innerHTML = fyTaxableIncome;
+            document.getElementById('fy-income-tax').innerHTML = fyIncomeTax;
+            document.getElementById('fy-medicare-levy').innerHTML = fyMedicareLevy;
+            document.getElementById('fy-medicare-levy-surcharge').innerHTML = fyMedicareLevySurcharge;
+            document.getElementById('fy-net-income').innerHTML = fyNetIncome;
+            document.getElementById('fy-superannuation-contribution').innerHTML = fySuperannuationContribution;
+            document.getElementById('fy-gross-income').innerHTML = fyGrossIncome;
+
+            document.getElementById('payg-taxable-income').innerHTML = paygTaxableIncome;
+            document.getElementById('payg-income-tax').innerHTML = paygIncomeTax;
+            document.getElementById('payg-medicare-levy').innerHTML = paygMedicareLevy;
+            document.getElementById('payg-net-income').innerHTML = paygNetIncome;
+            document.getElementById('payg-superannuation-contribution').innerHTML = paygSuperannuationContribution;
+            document.getElementById('payg-gross-income').innerHTML = paygGrossIncome;
+          } else {
+            document.getElementById('fy-taxable-income').innerHTML = empty;
+            document.getElementById('fy-income-tax').innerHTML = empty;
+            document.getElementById('fy-medicare-levy').innerHTML = empty;
+            document.getElementById('fy-medicare-levy-surcharge').innerHTML = empty;
+            document.getElementById('fy-net-income').innerHTML = empty;
+            document.getElementById('fy-superannuation-contribution').innerHTML = empty;
+            document.getElementById('fy-gross-income').innerHTML = empty;
+
+            document.getElementById('payg-taxable-income').innerHTML = empty;
+            document.getElementById('payg-income-tax').innerHTML = empty;
+            document.getElementById('payg-medicare-levy').innerHTML = empty;
+            document.getElementById('payg-net-income').innerHTML = empty;
+            document.getElementById('payg-superannuation-contribution').innerHTML = empty;
+            document.getElementById('payg-gross-income').innerHTML = empty;
+          }
+        }
+      </script>
+  </body>
+</html>
